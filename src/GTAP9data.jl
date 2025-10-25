@@ -1,6 +1,6 @@
 module GTAP9data
 
-using CSV, DataFrames, JLD2
+using CSV, DataFrames
 
 # Read data into a Vector
 path        = "./src/Input_GTAP9/"
@@ -81,7 +81,7 @@ set_cgi = setdiff(set_g, set_i)
 
 # Assignment done in GTAPinGAMS
 d["esub"]       = Dict(i => 0 for i ∈ s["set_g"])       # Top-level elasticity of substitution
-d["esub"][:c]   = 1                                     
+d["esubdm"]     = d["esubd"]                                   
 
 vdm = Dict(
     (i, r) => sum(vdfm[(i, g, r)] for g in set_g)
@@ -140,5 +140,23 @@ vb = Dict(
         +sum(rtxs[(i, r, s)]*vxmd[(i, r, s)] for i ∈ set_i, s ∈ set_r)
     for r ∈ set_r
 )
+
+vafm = Dict(
+    (i, g, r) => vdfm[(i, g, r)]+vifm[(i, g, r)]
+    for i ∈ set_i, g ∈ set_g, r ∈ set_r
+)
+
+rtfa = Dict(
+    (i, g, r) => (vdfm[(i, g, r)]*(1+rtfd[(i, g, r)]) + vifm[(i, g, r)]*(1+rtfi[(i, g, r)]))/vafm[(i, g, r)] - 1
+    for i ∈ set_i, g ∈ set_g, r ∈ set_r
+)
+
+#=
+vafm(i,g,r)			= vdfm(i,g,r)+vifm(i,g,r);
+rtfa0(i,g,r)			= 0;
+rtfa0(i,g,r)$vafm(i,g,r)	= ((vdfm(i,g,r)*(1+rtfd(i,g,r))+vifm(i,g,r)*(1+rtfi(i,g,r)))/vafm(i,g,r))-1;	
+rtfa(i,g,r)			= rtfa0(i,g,r);
+vum(r)				= vom("c",r)+vom("i",r);
+=#
 
 end # module GTAP9data
