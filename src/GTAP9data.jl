@@ -144,12 +144,7 @@ vb = Dict(
 )
 
 vafm = Dict(
-    (i, g, r) => vdfm[(i, g, r)]+vifm[(i, g, r)]
-    for i ∈ set_i, g ∈ set_g, r ∈ set_r
-)
-
-rtfa = Dict(
-    (i, g, r) => (vdfm[(i, g, r)]*(1+rtfd[(i, g, r)]) + vifm[(i, g, r)]*(1+rtfi[(i, g, r)]))/vafm[(i, g, r)] - 1
+    (i, g, r) => vdfm[(i, g, r)]*(1+rtfd[(i, g, r)])+vifm[(i, g, r)]*(1+rtfi[(i, g, r)])
     for i ∈ set_i, g ∈ set_g, r ∈ set_r
 )
 
