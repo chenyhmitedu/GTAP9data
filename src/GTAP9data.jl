@@ -78,6 +78,8 @@ set_g   = s["set_g"]
 set_r   = s["set_r"]
 set_f   = s["set_f"]
 set_cgi = setdiff(set_g, set_i)
+set_sf  = [:lnd, :fix]
+set_mf  = setdiff(set_f, set_sf) 
 
 # Assignment done in GTAPinGAMS
 d["esub"]       = Dict(i => 0 for i ∈ s["set_g"])       # Top-level elasticity of substitution
@@ -151,12 +153,25 @@ rtfa = Dict(
     for i ∈ set_i, g ∈ set_g, r ∈ set_r
 )
 
-#=
-vafm(i,g,r)			= vdfm(i,g,r)+vifm(i,g,r);
-rtfa0(i,g,r)			= 0;
-rtfa0(i,g,r)$vafm(i,g,r)	= ((vdfm(i,g,r)*(1+rtfd(i,g,r))+vifm(i,g,r)*(1+rtfi(i,g,r)))/vafm(i,g,r))-1;	
-rtfa(i,g,r)			= rtfa0(i,g,r);
-vum(r)				= vom("c",r)+vom("i",r);
-=#
+etadx = Dict(
+    i => esubd[i]*0.5
+    for i ∈ set_i
+)
+
+esub = Dict(
+    i => 0.5
+    for i ∈ set_i
+)
+
+esub[:c] = 0
+
+#vxm(i,s)	= (vst(i,s) + sum(r,vxmd(i,s,r)))
+vxm = Dict((i, s) => vst[i, s] + sum(vxmd[i, s, r] for r ∈ set_r)
+           for i ∈ set_i, s ∈ set_r 
+)
+
+vhm = Dict((j, r) => vom[j, r]-vxm[j, r]
+           for j ∈ set_i, r ∈ set_r 
+)
 
 end # module GTAP9data
