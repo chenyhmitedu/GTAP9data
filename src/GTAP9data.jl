@@ -169,4 +169,16 @@ vhm = Dict((j, r) => vom[j, r]-vxm[j, r]
            for j ∈ set_i, r ∈ set_r 
 )
 
+for i ∈ set_cgi, r ∈ set_r 
+    vom[i, r] = sum((vdfm[j, i, r]*(1 + rtfd0[j, i, r]) + vifm[j, i, r]*(1 + rtfi0[j, i, r]))/(1 - rto0[i, r]) for j ∈ set_i)
+end
+
+# Declare CSAVE elasticities not in GTAP9data package
+
+esubn       = Dict(i => 0.5 for i ∈ set_i)
+esubve      = Dict(i => 0.4 for i ∈ set_i)
+esubef      = Dict(i => 1.5 for i ∈ set_g)
+esubf       = Dict(i => 1.0 for i ∈ set_g)
+esubc       = 1.0
+
 end # module GTAP9data
