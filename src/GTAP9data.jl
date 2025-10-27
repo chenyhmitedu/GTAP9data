@@ -61,14 +61,14 @@ end
 vdfm    = fullspace(d["vdfm"], s["set_i"], s["set_g"], s["set_r"])
 vxmd    = fullspace(d["vxmd"], s["set_i"], s["set_r"], s["set_r"])
 vst     = fullspace(d["vst"], s["set_i"], s["set_r"])
-rtms    = fullspace(d["rtms"], s["set_i"], s["set_r"], s["set_r"])
-rtxs    = fullspace(d["rtxs"], s["set_i"], s["set_r"], s["set_r"])
+rtms0   = fullspace(d["rtms"], s["set_i"], s["set_r"], s["set_r"])
+rtxs0   = fullspace(d["rtxs"], s["set_i"], s["set_r"], s["set_r"])
 vifm    = fullspace(d["vifm"], s["set_i"], s["set_g"], s["set_r"])
-rtfd    = fullspace(d["rtfd"], s["set_i"], s["set_g"], s["set_r"])
-rtfi    = fullspace(d["rtfi"], s["set_i"], s["set_g"], s["set_r"])
-rto     = fullspace(d["rto"], s["set_g"], s["set_r"])
+rtfd0   = fullspace(d["rtfd"], s["set_i"], s["set_g"], s["set_r"])
+rtfi0   = fullspace(d["rtfi"], s["set_i"], s["set_g"], s["set_r"])
+rto0    = fullspace(d["rto"], s["set_g"], s["set_r"])
 vfm     = fullspace(d["vfm"], s["set_f"], s["set_g"], s["set_r"])
-rtf     = fullspace(d["rtf"], s["set_f"], s["set_g"], s["set_r"])
+rtf0    = fullspace(d["rtf"], s["set_f"], s["set_g"], s["set_r"])
 vtwr    = fullspace(d["vtwr"], s["set_i"], s["set_i"], s["set_r"], s["set_r"])
 esubd   = fullspace(d["esubd"], s["set_i"])
 esubm   = fullspace(d["esubm"], s["set_i"])
@@ -96,7 +96,7 @@ vom = Dict(
 )
 
 vom_a = Dict(
-    (i, r) => sum((vdfm[(j, i, r)]*(1+rtfd[(j, i, r)]) + vifm[(j, i, r)]*(1+rtfi[(j, i, r)]))/(1-rto[(i, r)]) for j ∈ set_i) 
+    (i, r) => sum((vdfm[(j, i, r)]*(1+rtfd0[(j, i, r)]) + vifm[(j, i, r)]*(1+rtfi0[(j, i, r)]))/(1-rto0[(i, r)]) for j ∈ set_i) 
     for i ∈ set_cgi, r ∈ set_r
 )
 
@@ -115,11 +115,11 @@ vdm = merge(vdm, vdm_a)
 #key = [k for (k, v) in vim if v == 0]
 
 pvxmd = Dict(
-    (i, s, r) => (1 + rtms[(i, s, r)])*(1 - rtxs[(i, s, r)]) for i ∈ set_i, s ∈ set_r, r ∈ set_r
+    (i, s, r) => (1 + rtms0[(i, s, r)])*(1 - rtxs0[(i, s, r)]) for i ∈ set_i, s ∈ set_r, r ∈ set_r
 )
 
 pvtwr = Dict(
-    (i, s, r) => 1 + rtms[(i, s, r)] for i ∈ set_i, s ∈ set_r, r ∈ set_r
+    (i, s, r) => 1 + rtms0[(i, s, r)] for i ∈ set_i, s ∈ set_r, r ∈ set_r
 )
 
 vtw = Dict(
@@ -135,16 +135,16 @@ vim = Dict(
 vb = Dict(
     r => sum(vom[(i, r)] for i ∈ set_cgi)
         -sum(vfm[(f, g, r)] for f ∈ set_f, g ∈ set_g)
-        -sum(vom[(g, r)]*rto[(g, r)] for g ∈ set_g)
-        -sum(vdfm[(i, g, r)]*rtfd[(i, g, r)] + vifm[(i, g, r)]*rtfi[(i, g, r)] for i ∈ set_i, g ∈ set_g)
-        -sum(vfm[(f, g, r)]*rtf[(f, g, r)] for f ∈ set_f, g ∈ set_g)
-        -sum(rtms[(i, s, r)]*(vxmd[(i, s, r)]*(1-rtxs[(i, s, r)]) + sum(vtwr[(j, i, s, r)] for j ∈ set_i)) for i ∈ set_i, s ∈ set_r)
-        +sum(rtxs[(i, r, s)]*vxmd[(i, r, s)] for i ∈ set_i, s ∈ set_r)
+        -sum(vom[(g, r)]*rto0[(g, r)] for g ∈ set_g)
+        -sum(vdfm[(i, g, r)]*rtfd0[(i, g, r)] + vifm[(i, g, r)]*rtfi0[(i, g, r)] for i ∈ set_i, g ∈ set_g)
+        -sum(vfm[(f, g, r)]*rtf0[(f, g, r)] for f ∈ set_f, g ∈ set_g)
+        -sum(rtms0[(i, s, r)]*(vxmd[(i, s, r)]*(1-rtxs0[(i, s, r)]) + sum(vtwr[(j, i, s, r)] for j ∈ set_i)) for i ∈ set_i, s ∈ set_r)
+        +sum(rtxs0[(i, r, s)]*vxmd[(i, r, s)] for i ∈ set_i, s ∈ set_r)
     for r ∈ set_r
 )
 
 vafm = Dict(
-    (i, g, r) => vdfm[(i, g, r)]*(1+rtfd[(i, g, r)])+vifm[(i, g, r)]*(1+rtfi[(i, g, r)])
+    (i, g, r) => vdfm[(i, g, r)]*(1+rtfd0[(i, g, r)])+vifm[(i, g, r)]*(1+rtfi0[(i, g, r)])
     for i ∈ set_i, g ∈ set_g, r ∈ set_r
 )
 
