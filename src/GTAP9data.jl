@@ -79,7 +79,8 @@ set_r   = s["set_r"]
 set_f   = s["set_f"]
 set_cgi = setdiff(set_g, set_i)
 set_sf  = [:lnd, :fix]
-set_mf  = setdiff(set_f, set_sf) 
+set_mf  = setdiff(set_f, set_sf)
+set_tr  = [:otp, :wtp, :atp] 
 
 # Assignment done in GTAPinGAMS
 d["esub"]       = Dict(i => 0 for i ∈ s["set_g"])       # Top-level elasticity of substitution
@@ -172,6 +173,11 @@ vhm = Dict((j, r) => vom[j, r]-vxm[j, r]
 for i ∈ set_cgi, r ∈ set_r 
     vom[i, r] = sum((vdfm[j, i, r]*(1 + rtfd0[j, i, r]) + vifm[j, i, r]*(1 + rtfi0[j, i, r]))/(1 - rto0[i, r]) for j ∈ set_i)
 end
+
+# vxmr(i,s,r)	= vxmd(i,s,r)*(1-rtxs0(i,s,r))+sum(j, vtwr(j,i,s,r));
+vxmr = Dict((i, s, r) => vxmd[i, s, r]*(1 - rtxs0[i, s, r]) + sum(vtwr[j, i, s, r] for j ∈ set_tr)
+            for i ∈ set_i, s ∈ set_r, r ∈ set_r
+)
 
 # Declare CSAVE elasticities not in GTAP9data package
 
