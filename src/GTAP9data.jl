@@ -80,7 +80,7 @@ set_f   = s["set_f"]
 set_cgi = setdiff(set_g, set_i)
 set_sf  = [:lnd, :fix]
 set_mf  = setdiff(set_f, set_sf)
-set_tr  = [:otp, :wtp, :atp] 
+set_tr  = [:tran] 
 
 # Assignment done in GTAPinGAMS
 d["esub"]       = Dict(i => 0 for i ∈ s["set_g"])       # Top-level elasticity of substitution
