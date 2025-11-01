@@ -179,6 +179,10 @@ vxmr = Dict((i, s, r) => vxmd[i, s, r]*(1 - rtxs0[i, s, r]) + sum(vtwr[j, i, s, 
             for i ∈ set_i, s ∈ set_r, r ∈ set_r
 )
 
+evom        = Dict((f, r) => sum(vfm[f, j, r] for j ∈ set_i)
+                    for f ∈ set_f, r ∈ set_r
+)
+
 # Declare CSAVE elasticities not in GTAP9data package
 
 esubn       = Dict(i => 0.5 for i ∈ set_i)
