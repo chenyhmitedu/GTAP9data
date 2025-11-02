@@ -159,7 +159,7 @@ esub = Dict(
     for i ∈ set_i
 )
 
-esub[:c] = 0
+merge!(esub, Dict(i => 0.0 for i ∈ set_cgi))
 
 #vxm(i,s)	= (vst(i,s) + sum(r,vxmd(i,s,r)))
 vxm = Dict((i, s) => vst[i, s] + sum(vxmd[i, s, r] for r ∈ set_r)
