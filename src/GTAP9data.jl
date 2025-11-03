@@ -185,7 +185,7 @@ evom        = Dict((f, r) => sum(vfm[f, j, r] for j ∈ set_i)
 
 # Declare CSAVE elasticities not in GTAP9data package
 
-esubn       = Dict(i => 0.5 for i ∈ set_i)
+esubn       = Dict(i => 0.5 for i ∈ set_g)
 esubve      = Dict(i => 0.4 for i ∈ set_i)
 esubef      = Dict(i => 1.5 for i ∈ set_g)
 esubf       = Dict(i => 1.0 for i ∈ set_g)
