@@ -79,7 +79,7 @@ function source(name::String = "./src/Input_GTAP9/")
     set_cgi = setdiff(set_g, set_i)
     set_sf  = [:lnd, :fix]
     set_mf  = setdiff(set_f, set_sf)
-    set_tr  = [:tran]                                                                   
+    # set_tr  = [:tran]                                                                   
 
     # Assignment done in GTAPinGAMS
     d["esub"]       = Dict(i => 0 for i ∈ s["set_g"])       # Top-level elasticity of substitution
@@ -174,9 +174,9 @@ function source(name::String = "./src/Input_GTAP9/")
     end
 
     # vxmr(i,s,r)	= vxmd(i,s,r)*(1-rtxs0(i,s,r))+sum(j, vtwr(j,i,s,r));
-    vxmr = Dict((i, s, r) => vxmd[i, s, r]*(1 - rtxs0[i, s, r]) + sum(vtwr[j, i, s, r] for j ∈ set_tr)
-                for i ∈ set_i, s ∈ set_r, r ∈ set_r
-    )
+    #vxmr = Dict((i, s, r) => vxmd[i, s, r]*(1 - rtxs0[i, s, r]) + sum(vtwr[j, i, s, r] for j ∈ set_tr)
+    #            for i ∈ set_i, s ∈ set_r, r ∈ set_r
+    #)
 
     evom        = Dict((f, r) => sum(vfm[f, j, r] for j ∈ set_i)
                         for f ∈ set_f, r ∈ set_r
@@ -190,9 +190,9 @@ function source(name::String = "./src/Input_GTAP9/")
     esubf       = Dict(i => 1.0 for i ∈ set_g)
     esubc       = 1.0
 
-    @save "IO.jld2" vdfm vxmd vst rtms0 rtxs0 vifm rtfd0 rtfi0 rto0 vfm rtf0 vtwr esubd esubm esubva set_i set_g set_r set_f set_sf set_mf set_cgi vdm vom pvxmd pvtwr vtw vim vb d vafm etadx esub vxm vhm vxmr esubn esubve esubef esubf esubc evom
+    @save "IO.jld2" vdfm vxmd vst rtms0 rtxs0 vifm rtfd0 rtfi0 rto0 vfm rtf0 vtwr esubd esubm esubva set_i set_g set_r set_f set_sf set_mf set_cgi vdm vom pvxmd pvtwr vtw vim vb d vafm etadx esub vxm vhm esubn esubve esubef esubf esubc evom
 
-    return IO 
+    return vtwr
 end
 
 end # module GTAP9data
